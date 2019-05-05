@@ -23,8 +23,10 @@ Realize o download (A copia do git já contém os binários necessários):
 Extrai
 	tar xzf ./hyperledger-fabric-linux-amd64-1.2.0.tar.gz --overwrite
 
-Coloca libs no PATH
-	export PATH=/opt/blockchain/hyperledger/1.4/bin:$PATH
+Coloca libs no PATH:
+```shell
+root@NTB-VPCSB35FB:/home# export PATH=/opt/blockchain/hyperledger/1.4/bin:$PATH
+```
 	
 cd network
 
