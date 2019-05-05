@@ -30,32 +30,60 @@ root@NTB-VPCSB35FB:/home# export PATH=/opt/blockchain/hyperledger/1.4/bin:$PATH
 	
 cd network
 
-mkdir crypto-config channel-artifacts
-	
-cryptogen generate --config=./crypto-config.yaml
+```shell
+root@NTB-VPCSB35FB:/home# mkdir crypto-config channel-artifacts
+```
+
+```shell
+root@NTB-VPCSB35FB:/home# cryptogen generate --config=./crypto-config.yaml
+```
 
 Após a execução do comando será criada a pasta crypto-config com a seguinte estrutura: arvore-crypto-config.txt
 
-export FABRIC_CFG_PATH=$PWD
+```shell
+root@NTB-VPCSB35FB:/home# export FABRIC_CFG_PATH=$PWD
+```
+```shell
+root@NTB-VPCSB35FB:/home# export CHANNEL_NAME=villalabs-channel
+```
 
-export CHANNEL_NAME=villalabs-channel
-
-configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block -channelID byfn-sys-channel
-configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
-configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
-configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
+```shell
+root@NTB-VPCSB35FB:/home# configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block -channelID byfn-sys-channel
+```
+```shell
+root@NTB-VPCSB35FB:/home# configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+```
+```shell
+root@NTB-VPCSB35FB:/home# configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
+```
+```shell
+root@NTB-VPCSB35FB:/home# configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
+```
 
 # Variaveis utilizada para criar rede e versão a ser baixada
+```shell
 export COMPOSE_PROJECT_NAME=net
+```
+
+```shell
 export IMAGE_TAG=latest
+```
 
-docker-compose -f docker-compose-cli.yaml up -d
+```shell
+root@NTB-VPCSB35FB:/home# docker-compose -f docker-compose-cli.yaml up -d
+```
 
-docker exec -it cli bash
+```shell
+root@NTB-VPCSB35FB:/home# docker exec -it cli bash
+```
 
+```shell
 export CHANNEL_NAME=villalabs-channel
+```
 
+```shell
 peer channel create -o orderer.villalabs.co:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/msp/tlscacerts/tlsca.villalabs.co-cert.pem
+```
 
 peer channel join -b villalabs-channel.block (Join all peers)
 
