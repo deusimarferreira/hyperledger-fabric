@@ -1,80 +1,65 @@
-# Hyperledger Fabric 1.4
+# Hyperledger Fabric 1.4.2
+
+# Pré-requisitos
+
+Remcomendo que antes de continuar acesse [pré-requisitos](https://hyperledger-fabric.readthedocs.io/en/latest/prereqs.html) para verificar se seu ambiente a ser utilizado para desenvolvimento de aplicações blockchain com Hyperledger Fabric.
 
 ```txt
-Node Windows Extras: https://hyperledger-fabric.readthedocs.io/en/latest/prereqs.html#windows-extras
+Notas:
+    Se você utiliza ambiente de desenvolvimento baseado no Windows recomendo uma atenção especial para Windows extras.
 ```
 
-Definindo diretório para armazenar os binários e arquivos de configuração da rede:
-```shell
-root@NTB-VPCSB35FB:/home# mkdir /opt/blockchain
-root@NTB-VPCSB35FB:/home# mkdir /opt/blockchain/hyperledger/
-```
-Acessando diretório:
-```shell
-root@NTB-VPCSB35FB:/home# cd /opt/blockchain/hyperledger/
-```
-```shell
-root@NTB-VPCSB35FB:/home# git clone -b 1.4 https://github.com/deusimarferreira/hyperledger.git 1.4
-```
+# Definindo diretório de trabalho
 
-Realize o download (A copia do git já contém os binários necessários):
-	wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric/hyperledger-fabric/linux-amd64-1.4.0/hyperledger-fabric-linux-amd64-1.4.0.tar.gz
+Vale lembra que os diretórios utilizados para armazenar os binários e arquivos de configuração da rede a seguir não é uma imposição, você pode definir outros caminhos caso deseje.
 
-Extrai
-	tar xzf ./hyperledger-fabric-linux-amd64-1.2.0.tar.gz --overwrite
+```sh
+$ mkdir /opt/blockchain
+$ mkdir /opt/blockchain/hyperledger/
 
-Coloca libs no PATH:
-```shell
-root@NTB-VPCSB35FB:/home# export PATH=/opt/blockchain/hyperledger/1.4/bin:$PATH
-```
-	
-cd network
+$ cd /opt/blockchain/hyperledger/
+$ git clone -b feature/1.4.2 https://github.com/deusimarferreira/hyperledger.git 1.4.2
 
-```shell
-root@NTB-VPCSB35FB:/home# mkdir crypto-config channel-artifacts
+$ cd 1.4.2/
+
+# Download Hyperledger Fabric v1.4.2
+$ wget https://nexus.hyperledger.org/content/repositories/releases/org/hyperledger/fabric/hyperledger-fabric/linux-amd64-1.4.2/hyperledger-fabric-linux-amd64-1.4.2.tar.gz
+
+# Extrai binários, vide pasta bin/
+$ tar xzf ./hyperledger-fabric-linux-amd64-1.4.2.tar.gz --overwrite
+
+# Colocando as libs no PATH do SO
+$ export PATH=$(pwd)/bin:$PATH
 ```
 
+# Vamos iniciar as configurações da nossa rede
 ```shell
-root@NTB-VPCSB35FB:/home# cryptogen generate --config=./crypto-config.yaml
+$ cd network
+
+$ sudo mkdir crypto-config channel-artifacts
+$ sudo cryptogen generate --config=./crypto-config.yaml
 ```
 
-Após a execução do comando será criada a pasta crypto-config com a seguinte estrutura: arvore-crypto-config.txt
+> Após a execução do comando será criada a pasta ``crypto-config`` com a seguinte [estrutura](arvore-crypto-config.txt)
 
 ```shell
-root@NTB-VPCSB35FB:/home# export FABRIC_CFG_PATH=$PWD
-```
-```shell
-root@NTB-VPCSB35FB:/home# export CHANNEL_NAME=villalabs-channel
+$ sudo export FABRIC_CFG_PATH=$PWD
+$ sudo export CHANNEL_NAME=villalabs-channel
 ```
 
 ```shell
-root@NTB-VPCSB35FB:/home# configtxgen -profile TwoOrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block -channelID byfn-sys-channel
-```
-```shell
-root@NTB-VPCSB35FB:/home# configtxgen -profile TwoOrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
-```
-```shell
-root@NTB-VPCSB35FB:/home# configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
-```
-```shell
-root@NTB-VPCSB35FB:/home# configtxgen -profile TwoOrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org2MSP
-```
-
-# Variaveis utilizada para criar rede e versão a ser baixada
-```shell
-export COMPOSE_PROJECT_NAME=net
+$ sudo configtxgen -profile OrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
+$ sudo configtxgen -profile OrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+$ sudo configtxgen -profile OrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg ProviderMSP
+$ sudo configtxgen -profile OrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org2MSPanchors.tx -channelID $CHANNEL_NAME -asOrg ConsumerMSP
 ```
 
 ```shell
-export IMAGE_TAG=latest
+$ docker-compose -f docker-compose-cli.yaml up -d
 ```
 
 ```shell
-root@NTB-VPCSB35FB:/home# docker-compose -f docker-compose-cli.yaml up -d
-```
-
-```shell
-root@NTB-VPCSB35FB:/home# docker exec -it cli bash
+$ docker exec -it cli bash
 ```
 
 ```shell
@@ -82,67 +67,104 @@ export CHANNEL_NAME=villalabs-channel
 ```
 
 ```shell
-peer channel create -o orderer.villalabs.co:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/msp/tlscacerts/tlsca.villalabs.co-cert.pem
+peer channel create -o orderer.villalabs.co:7050 -c $CHANNEL_NAME -f ./channel-artifacts/channel.tx
 ```
 
-peer channel join -b villalabs-channel.block (Join all peers)
+> peer channel join -b villalabs-channel.block (Join all peers)
 
-Org1:
-$ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.villalabs.co/users/Admin\@org1.villalabs.co/msp
-$ export CORE_PEER_LOCALMSPID="Org1MSP"
+## Provider
+```sh
+$ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.villalabs.co/users/Admin\@provider.villalabs.co/msp/
+$ export CORE_PEER_LOCALMSPID="ProviderMSP"
+```
 
-Peers
-$ export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.villalabs.co/peers/peer0.org1.villalabs.co/tls/ca.crt
-$ export CORE_PEER_ADDRESS=peer0.org1.villalabs.co:7051
+### Peers
+```sh
+$ export CORE_PEER_ADDRESS=peer0.provider.villalabs.co:7051
+$ export CORE_PEER_ADDRESS=peer1.provider.villalabs.co:7051
+```
 
-$ export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.villalabs.co/peers/peer1.org1.villalabs.co/tls/ca.crt
-$ export CORE_PEER_ADDRESS=peer1.org1.villalabs.co:8051
+## Consumer
+```sh
+$ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/consumer.villalabs.co/users/Admin\@consumer.villalabs.co/msp/
+$ export CORE_PEER_LOCALMSPID="ConsumerMSP"
+```
 
-Org2:
-$ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.villalabs.co/users/Admin\@org2.villalabs.co/msp
-$ export CORE_PEER_LOCALMSPID=Org2MSP
+### Peers
+```sh
+$ export CORE_PEER_ADDRESS=peer0.consumer.villalabs.co:7051
+$ export CORE_PEER_ADDRESS=peer1.consumer.villalabs.co:7051
+```
 
-Peers
-$ export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.villalabs.co/peers/peer0.org2.villalabs.co/tls/ca.crt 
-$ export CORE_PEER_ADDRESS=peer0.org2.villalabs.co:9051
+> Realiza update apenas nos peers zero
+```sh
+$ peer channel update -o orderer.villalabs.co:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CORE_PEER_LOCALMSPID}anchors.tx
+```
 
-$ export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.villalabs.co/peers/peer1.org2.villalabs.co/tls/ca.crt 
-$ export CORE_PEER_ADDRESS=peer1.org2.villalabs.co:10051
-
--- Realiza update apenas nos peers zero
-$ peer channel update -o orderer.villalabs.co:7050 -c $CHANNEL_NAME -f ./channel-artifacts/${CORE_PEER_LOCALMSPID}anchors.tx --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/msp/tlscacerts/tlsca.villalabs.co-cert.pem
-
--- Instala o contrato (Chaincode)
+# Realizar a instalação do contrato (Chaincode)
+## Provider
+```sh
+$ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.villalabs.co/users/Admin\@provider.villalabs.co/msp/
+$ export CORE_PEER_LOCALMSPID="ProviderMSP"
+```
+### PEER0
+```sh
+$ export CORE_PEER_ADDRESS=peer0.provider.villalabs.co:7051
 $ peer chaincode install -n deal -v 1.0 -l node -p /opt/gopath/src/github.com/chaincode/deal
+```
+### PEER1
+```sh
+$ export CORE_PEER_ADDRESS=peer1.provider.villalabs.co:7051
+$ peer chaincode install -n deal -v 1.0 -l node -p /opt/gopath/src/github.com/chaincode/deal
+```
 
--- Instanciando o chaincode no canal
-$ peer chaincode instantiate -o orderer.villalabs.co:7050 -C $CHANNEL_NAME -l node -n deal -v 1.0 -c '{"Args":[]}' --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/msp/tlscacerts/tlsca.villalabs.co-cert.pem
+## Consumer
+```sh
+$ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/consumer.villalabs.co/users/Admin\@consumer.villalabs.co/msp/
+$ export CORE_PEER_LOCALMSPID="ConsumerMSP"
+```
+### PEER0
+```sh
+$ export CORE_PEER_ADDRESS=peer0.consumer.villalabs.co:7051
+$ peer chaincode install -n deal -v 1.0 -l node -p /opt/gopath/src/github.com/chaincode/deal
+```
+### PEER1
+```sh
+$ export CORE_PEER_ADDRESS=peer1.consumer.villalabs.co:7051
+$ peer chaincode install -n deal -v 1.0 -l node -p /opt/gopath/src/github.com/chaincode/deal
+```
 
-$ peer chaincode invoke -n deal -c '{"Args":["123", "Product one", "10"], "Function":"registerProduct"}' -C $CHANNEL_NAME --tls --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/msp/tlscacerts/tlsca.villalabs.co-cert.pem
+# Instanciando o chaincode no canal
+```sh
+$ peer chaincode instantiate -o orderer.villalabs.co:7050 -C $CHANNEL_NAME -l node -n deal -v 1.0 -c '{"Args":[]}'
+```
 
-$ export ORDERER_CA=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/msp/tlscacerts/tlsca.villalabs.co-cert.pem
+# Executando operações na ledger através do chaincode
+```sh
+$ peer chaincode invoke -n deal -c '{"Args":["123", "Product one", "10"], "Function":"registerProduct"}' -C $CHANNEL_NAME
 
-$ peer chaincode query -n deal -c '{"Args":["123"], "Function":"getProduct"}' -C $CHANNEL_NAME --tls --cafile $ORDERER_CA
+$ peer chaincode query -n deal -c '{"Args":["123"], "Function":"getProduct"}' -C $CHANNEL_NAME
+```
 
--- Inspecionar: Fora do conteiner, local onde encotra-se o chaincode
-$ CORE_PEER_TLS_ENABLED=false CORE_CHAINCODE_LOGLEVEL=debug CORE_CHAINCODE_ID_NAME="deal:1.0" node --inspect deal.js --peer.address localhost:7051
+# Inspecionar: Fora do container, local onde encotra-se o chaincode
+```sh
+$ CORE_CHAINCODE_ID_NAME="deal:1.0.1" node --inspect deal.js --peer.address localhost:7052
+```
 
-GRPC_TRACE=all GRPC_VERBOSITY=ERROR CORE_CHAINCODE_ID_NAME="deal:1.0" node --inspect deal.js --peer.address localhost:7051
+# Aplicação consumindo o contrato getProduct ``fabric-network``
 
-https://slproweb.com/products/Win32OpenSSL.html
+A aplicação criada para consumir o ``smart contact`` encontra-se ``/chaincode/app/*``
 
-node-gyp configure --msvs_version=Current
+* wallet.js - Script deve-se ser utilizado para configurar a identidade para acesso ao contrato deal:1.0.1
+* getProduct.js - Script resposável realizar requisição ao deal:1.0.1{Function: getProduct}
+    * Passos
+        * Seleciona uma identidade para conectar a rede blockchain, depende da execução do ``wallet.js``
+        * Conecta a rede utilizando a classe Gateway
+        * Acessa a rede ``network_sampleNetwork``
+        * Reliza um call para function ``getProduct``
+        * Processa resposta
 
-grpcc --proto ./service/myservice.proto --address localhost:7051
+# Referências
+[Hyperledger Fabric Docs](https://hyperledger-fabric.readthedocs.io/en/release-1.4/whatis.html)
 
-CORE_LOGGING_PEER=debug ./build/bin/peer chaincode query -n deal -c '{"Args":["123"], "Function":"getProduct"}' -C villalabs-channel
-
-CORE_CHAINCODE_LOGLEVEL=debug CORE_CHAINCODE_ID_NAME="deal:1.0"  CORE_PEER_ADDRESS=localhost:7051 npm start
-
-
-
-FABRIC_CA_CLIENT_TLS_CLIENT_CERTFILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/msp/tlscacerts/tlsca.villalabs.co-cert.pem CORE_CHAINCODE_ID_NAME="deal:1.0" node --inspect deal.js --peer.address localhost:7051
-
-chrome://inspect/devices
-
-docker image build --network=net_byfn -t deal .
+[Rodrigo Morbach](https://medium.com/@morbachrodrigo/criando-uma-rede-blockchain-com-hyperledger-fabric-e-node-js-4192c964e45a)

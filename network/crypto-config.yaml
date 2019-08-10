@@ -4,7 +4,7 @@ OrdererOrgs:
   # Orderer
   # ---------------------------------------------------------------------------
   - Name: Orderer
-    Domain: sampledomain.com    
+    Domain: villalabs.co    
     Specs:
       - Hostname: orderer
 # ---------------------------------------------------------------------------
@@ -13,7 +13,7 @@ PeerOrgs:
   # Provider
   # ---------------------------------------------------------------------------
   - Name: Provider
-    Domain: provider.sampledomain.com
+    Domain: provider.villalabs.co
     EnableNodeOUs: true
     
     Template:
@@ -25,7 +25,7 @@ PeerOrgs:
   # Consumer
   # ---------------------------------------------------------------------------
   - Name: Consumer
-    Domain: consumer.sampledomain.com
+    Domain: consumer.villalabs.co
     EnableNodeOUs: true
     Template:
       Count: 2

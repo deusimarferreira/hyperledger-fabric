@@ -3,18 +3,18 @@
 version: '2'
 
 volumes:
-  orderer.sampledomain.com:
-  peer0.provider.sampledomain.com:
-  peer1.provider.sampledomain.com:
-  peer0.consumer.sampledomain.com:
-  peer1.consumer.sampledomain.com:
+  orderer.villalabs.co:
+  peer0.provider.villalabs.co:
+  peer1.provider.villalabs.co:
+  peer0.consumer.villalabs.co:
+  peer1.consumer.villalabs.co:
 
 networks:
   sampleNetwork:
 
 services:
-  orderer.sampledomain.com:
-    container_name: orderer.sampledomain.com
+  orderer.villalabs.co:
+    container_name: orderer.villalabs.co
     image: hyperledger/fabric-orderer:latest
     environment:
       - FABRIC_LOGGING_SPEC=INFO
@@ -32,30 +32,30 @@ services:
     command: orderer
     volumes:
     - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-    - ./crypto-config/ordererOrganizations/sampledomain.com/orderers/orderer.sampledomain.com/msp:/var/hyperledger/orderer/msp
-    - ./crypto-config/ordererOrganizations/sampledomain.com/orderers/orderer.sampledomain.com/tls/:/var/hyperledger/orderer/tls
-    - orderer.sampledomain.com:/var/hyperledger/production/orderer
+    - ./crypto-config/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/msp:/var/hyperledger/orderer/msp
+    - ./crypto-config/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/tls/:/var/hyperledger/orderer/tls
+    - orderer.villalabs.co:/var/hyperledger/production/orderer
     ports:
       - 7050:7050    
     networks:
       - sampleNetwork
 
-  peer0.provider.sampledomain.com:
-    container_name: peer0.provider.sampledomain.com
+  peer0.provider.villalabs.co:
+    container_name: peer0.provider.villalabs.co
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.provider.sampledomain.com
-      - CORE_PEER_ADDRESS=peer0.provider.sampledomain.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.provider.sampledomain.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.provider.sampledomain.com:7051
+      - CORE_PEER_ID=peer0.provider.villalabs.co
+      - CORE_PEER_ADDRESS=peer0.provider.villalabs.co:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.provider.villalabs.co:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.provider.villalabs.co:7051
       - CORE_PEER_LOCALMSPID=ProviderMSP
     volumes:
         - /var/run/:/host/var/run/        
-        - ./crypto-config/peerOrganizations/provider.sampledomain.com/peers/peer0.provider.sampledomain.com/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/provider.sampledomain.com/peers/peer0.provider.sampledomain.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.provider.sampledomain.com:/var/hyperledger/production
+        - ./crypto-config/peerOrganizations/provider.villalabs.co/peers/peer0.provider.villalabs.co/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/provider.villalabs.co/peers/peer0.provider.villalabs.co/tls:/etc/hyperledger/fabric/tls
+        - peer0.provider.villalabs.co:/var/hyperledger/production
     ports:
       - 7051:7051
       - 7052:7052
@@ -63,22 +63,22 @@ services:
     networks:
       - sampleNetwork
 
-  peer1.provider.sampledomain.com:
-    container_name: peer1.provider.sampledomain.com
+  peer1.provider.villalabs.co:
+    container_name: peer1.provider.villalabs.co
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer1.provider.sampledomain.com
-      - CORE_PEER_ADDRESS=peer1.provider.sampledomain.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.provider.sampledomain.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.provider.sampledomain.com:7051
+      - CORE_PEER_ID=peer1.provider.villalabs.co
+      - CORE_PEER_ADDRESS=peer1.provider.villalabs.co:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.provider.villalabs.co:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.provider.villalabs.co:7051
       - CORE_PEER_LOCALMSPID=ProviderMSP
     volumes:
         - /var/run/:/host/var/run/        
-        - ./crypto-config/peerOrganizations/provider.sampledomain.com/peers/peer1.provider.sampledomain.com/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/provider.sampledomain.com/peers/peer1.provider.sampledomain.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.provider.sampledomain.com:/var/hyperledger/production
+        - ./crypto-config/peerOrganizations/provider.villalabs.co/peers/peer1.provider.villalabs.co/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/provider.villalabs.co/peers/peer1.provider.villalabs.co/tls:/etc/hyperledger/fabric/tls
+        - peer1.provider.villalabs.co:/var/hyperledger/production
     ports:
       - 8051:7051
       - 8052:7052
@@ -86,22 +86,22 @@ services:
     networks:
       - sampleNetwork
 
-  peer0.consumer.sampledomain.com:
-    container_name: peer0.consumer.sampledomain.com
+  peer0.consumer.villalabs.co:
+    container_name: peer0.consumer.villalabs.co
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer0.consumer.sampledomain.com
-      - CORE_PEER_ADDRESS=peer0.consumer.sampledomain.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.consumer.sampledomain.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.consumer.sampledomain.com:7051
+      - CORE_PEER_ID=peer0.consumer.villalabs.co
+      - CORE_PEER_ADDRESS=peer0.consumer.villalabs.co:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.consumer.villalabs.co:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer1.consumer.villalabs.co:7051
       - CORE_PEER_LOCALMSPID=ConsumerMSP
     volumes:
         - /var/run/:/host/var/run/        
-        - ./crypto-config/peerOrganizations/consumer.sampledomain.com/peers/peer0.consumer.sampledomain.com/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/consumer.sampledomain.com/peers/peer0.consumer.sampledomain.com/tls:/etc/hyperledger/fabric/tls
-        - peer0.consumer.sampledomain.com:/var/hyperledger/production
+        - ./crypto-config/peerOrganizations/consumer.villalabs.co/peers/peer0.consumer.villalabs.co/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/consumer.villalabs.co/peers/peer0.consumer.villalabs.co/tls:/etc/hyperledger/fabric/tls
+        - peer0.consumer.villalabs.co:/var/hyperledger/production
     ports:
       - 9051:7051
       - 9052:7052
@@ -109,22 +109,22 @@ services:
     networks:
       - sampleNetwork
 
-  peer1.consumer.sampledomain.com:
-    container_name: peer1.consumer.sampledomain.com
+  peer1.consumer.villalabs.co:
+    container_name: peer1.consumer.villalabs.co
     extends:
       file: peer-base.yaml
       service: peer-base
     environment:
-      - CORE_PEER_ID=peer1.consumer.sampledomain.com
-      - CORE_PEER_ADDRESS=peer1.consumer.sampledomain.com:7051
-      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.consumer.sampledomain.com:7051
-      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.consumer.sampledomain.com:7051
+      - CORE_PEER_ID=peer1.consumer.villalabs.co
+      - CORE_PEER_ADDRESS=peer1.consumer.villalabs.co:7051
+      - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer1.consumer.villalabs.co:7051
+      - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.consumer.villalabs.co:7051
       - CORE_PEER_LOCALMSPID=ConsumerMSP
     volumes:
         - /var/run/:/host/var/run/        
-        - ./crypto-config/peerOrganizations/consumer.sampledomain.com/peers/peer1.consumer.sampledomain.com/msp:/etc/hyperledger/fabric/msp
-        - ./crypto-config/peerOrganizations/consumer.sampledomain.com/peers/peer1.consumer.sampledomain.com/tls:/etc/hyperledger/fabric/tls
-        - peer1.consumer.sampledomain.com:/var/hyperledger/production
+        - ./crypto-config/peerOrganizations/consumer.villalabs.co/peers/peer1.consumer.villalabs.co/msp:/etc/hyperledger/fabric/msp
+        - ./crypto-config/peerOrganizations/consumer.villalabs.co/peers/peer1.consumer.villalabs.co/tls:/etc/hyperledger/fabric/tls
+        - peer1.consumer.villalabs.co:/var/hyperledger/production
     networks:
       - sampleNetwork
         
@@ -144,13 +144,13 @@ services:
       - FABRIC_LOGGING_SPEC=INFO
       #- CORE_LOGGING_LEVEL=DEBUG
       - CORE_PEER_ID=cli
-      - CORE_PEER_ADDRESS=peer0.provider.sampledomain.com:7051
+      - CORE_PEER_ADDRESS=peer0.provider.villalabs.co:7051
       - CORE_PEER_LOCALMSPID=ProviderMSP
       - CORE_PEER_TLS_ENABLED=false
-      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.sampledomain.com/peers/peer0.provider.sampledomain.com/tls/server.crt
-      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.sampledomain.com/peers/peer0.provider.sampledomain.com/tls/server.key
-      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.sampledomain.com/peers/peer0.provider.sampledomain.com/tls/ca.crt
-      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.sampledomain.com/users/Admin@provider.sampledomain.com/msp
+      - CORE_PEER_TLS_CERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.villalabs.co/peers/peer0.provider.villalabs.co/tls/server.crt
+      - CORE_PEER_TLS_KEY_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.villalabs.co/peers/peer0.provider.villalabs.co/tls/server.key
+      - CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.villalabs.co/peers/peer0.provider.villalabs.co/tls/ca.crt
+      - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/peerOrganizations/provider.villalabs.co/users/Admin@provider.villalabs.co/msp
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
     command: /bin/bash
     volumes:
@@ -159,11 +159,11 @@ services:
         - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto-config/        
         - ./channel-artifacts:/opt/gopath/src/github.com/hyperledger/fabric/peer/channel-artifacts/
     depends_on:
-      - orderer.sampledomain.com
-      - peer0.provider.sampledomain.com
-      - peer1.provider.sampledomain.com
-      - peer0.consumer.sampledomain.com
-      - peer1.consumer.sampledomain.com
+      - orderer.villalabs.co
+      - peer0.provider.villalabs.co
+      - peer1.provider.villalabs.co
+      - peer0.consumer.villalabs.co
+      - peer1.consumer.villalabs.co
 
     networks:
       - sampleNetwork

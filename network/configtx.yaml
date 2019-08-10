@@ -12,30 +12,30 @@ Organizations:
         Name: OrdererOrg
         ID: OrdererMSP
         # MSPDir is the filesystem path which contains the MSP configuration
-        MSPDir: crypto-config/ordererOrganizations/sampledomain.com/msp
+        MSPDir: crypto-config/ordererOrganizations/villalabs.co/msp
 
     - &Provider        
         Name: ProviderMSP
         # ID to load the MSP definition as
         ID: ProviderMSP
-        MSPDir: crypto-config/peerOrganizations/provider.sampledomain.com/msp
+        MSPDir: crypto-config/peerOrganizations/provider.villalabs.co/msp
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.provider.sampledomain.com
+            - Host: peer0.provider.villalabs.co
               Port: 7051
 
     - &Consumer        
         Name: ConsumerMSP
         # ID to load the MSP definition as
         ID: ConsumerMSP
-        MSPDir: crypto-config/peerOrganizations/consumer.sampledomain.com/msp
+        MSPDir: crypto-config/peerOrganizations/consumer.villalabs.co/msp
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.consumer.sampledomain.com
+            - Host: peer0.consumer.villalabs.co
               Port: 7051
     
 ################################################################################
@@ -96,7 +96,7 @@ Orderer: &OrdererDefaults
     OrdererType: solo
 
     Addresses:
-        - orderer.sampledomain.com:7050
+        - orderer.villalabs.co:7050
 
     # Batch Timeout: The amount of time to wait before creating a batch
     BatchTimeout: 2s
