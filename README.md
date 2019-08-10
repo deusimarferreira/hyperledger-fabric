@@ -156,7 +156,7 @@ $ CORE_CHAINCODE_ID_NAME="deal:1.0.1" node --inspect deal.js --peer.address loca
 A aplicação criada para consumir o ``smart contact`` encontra-se ``/chaincode/app/*``
 
 * wallet.js - Script deve-se ser utilizado para configurar a identidade para acesso ao contrato deal:1.0.1
-* getProduct.js - Script resposável realizar requisição ao deal:1.0.1{Function: getProduct}
+* app.js - Script resposável realizar requisição ao deal:1.0.1{Function: getProduct}
     * Passos
         * Seleciona uma identidade para conectar a rede blockchain, depende da execução do ``wallet.js``
         * Conecta a rede utilizando a classe Gateway
