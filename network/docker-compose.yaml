@@ -20,7 +20,7 @@ networks:
 volumes:
   ca.villalabs.co:
   orderer.villalabs.co:
-  peer0.provider.villalabs.co:
+  peer0.org1.villalabs.co:
 
 services:
   ca.villalabs.co:
@@ -29,15 +29,15 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.villalabs.co
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.villalabs.co-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/4239aa0dcd76daeeb8ba0cda701851d14504d31aad1b2ddddbac6a57365e497c_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ab5ddb02d03e8f65ae2f7c9b79b5c4c30fa5798b3442bca72d012f02f618d09e_sk
     ports:
-      - "7054:7054"
+      - 7054:7054
     command: sh -c 'fabric-ca-server start -b admin:adminpw'
     volumes:
       - ./crypto-config/peerOrganizations/org1.villalabs.co/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.villalabs.co
     networks:
-      - basic
+      - sampleNetwork
 
   orderer.villalabs.co:
     container_name: orderer.villalabs.co
@@ -54,11 +54,11 @@ services:
     ports:
       - 7050:7050
     volumes:
-      - ./config/:/etc/hyperledger/configtx
+      - ./channel-artifacts/:/etc/hyperledger/configtx
       - ./crypto-config/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/:/etc/hyperledger/msp/orderer
       - ./crypto-config/peerOrganizations/org1.villalabs.co/peers/peer0.org1.villalabs.co/:/etc/hyperledger/msp/peerOrg1
     networks:
-      - basic
+      - sampleNetwork
 
   peer0.org1.villalabs.co:
     container_name: peer0.org1.villalabs.co
@@ -82,11 +82,11 @@ services:
       - /var/run/:/host/var/run/
       - ./crypto-config/peerOrganizations/org1.villalabs.co/peers/peer0.org1.villalabs.co/msp:/etc/hyperledger/msp/peer
       - ./crypto-config/peerOrganizations/org1.villalabs.co/users:/etc/hyperledger/msp/users
-      - ./config:/etc/hyperledger/configtx
+      - ./channel-artifacts:/etc/hyperledger/configtx
     depends_on:
       - orderer.villalabs.co
     networks:
-      - basic
+      - sampleNetwork
 
   cli:
     container_name: cli
@@ -108,7 +108,7 @@ services:
       - ./../chaincode/:/opt/gopath/src/github.com/
       - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
     networks:
-        - basic
+        - sampleNetwork
     depends_on:
       - orderer.villalabs.co
       - peer0.org1.villalabs.co
