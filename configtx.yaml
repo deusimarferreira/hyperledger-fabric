@@ -1,3 +1,18 @@
+# Copyright 2018 Villa Labs All Rights Reserved
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# 
+
 ################################################################################
 #
 #   Section: Organizations
@@ -8,64 +23,33 @@
 ################################################################################
 Organizations:
    
-    - &OrdererOrg        
+    - &OrdererOrg
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment    
         Name: OrdererOrg
+
+        # ID to load the MSP definition as
         ID: OrdererMSP
+
         # MSPDir is the filesystem path which contains the MSP configuration
         MSPDir: crypto-config/ordererOrganizations/villalabs.co/msp
 
-    - &Provider        
-        Name: ProviderMSP
-        # ID to load the MSP definition as
-        ID: ProviderMSP
-        MSPDir: crypto-config/peerOrganizations/provider.villalabs.co/msp
-        AnchorPeers:
-            # AnchorPeers defines the location of peers which can be used
-            # for cross org gossip communication.  Note, this value is only
-            # encoded in the genesis block in the Application section context
-            - Host: peer0.provider.villalabs.co
-              Port: 7051
+    - &Org1
+        # DefaultOrg defines the organization which is used in the sampleconfig
+        # of the fabric.git development environment 
+        Name: Org1MSP
 
-    - &Consumer        
-        Name: ConsumerMSP
         # ID to load the MSP definition as
-        ID: ConsumerMSP
-        MSPDir: crypto-config/peerOrganizations/consumer.villalabs.co/msp
+        ID: Org1MSP
+
+        MSPDir: crypto-config/peerOrganizations/Org1.villalabs.co/msp
+        
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
             # for cross org gossip communication.  Note, this value is only
             # encoded in the genesis block in the Application section context
-            - Host: peer0.consumer.villalabs.co
+            - Host: peer0.org1.villalabs.co
               Port: 7051
-    
-################################################################################
-#
-#   SECTION: Capabilities
-#
-#   - This section defines the capabilities of fabric network. This is a new
-#   concept as of v1.1.0 and should not be utilized in mixed networks with
-#   v1.0.x peers and orderers.  Capabilities define features which must be
-#   present in a fabric binary for that binary to safely participate in the
-#   fabric network.  For instance, if a new MSP type is added, newer binaries
-#   might recognize and validate the signatures from this type, while older
-#   binaries without this support would be unable to validate those
-#   transactions.  This could lead to different versions of the fabric binaries
-#   having different world states.  Instead, defining a capability for a channel
-#   informs those binaries without this capability that they must cease
-#   processing transactions until they have been upgraded.  For v1.0.x if any
-#   capabilities are defined (including a map with all capabilities turned off)
-#   then the v1.0.x peer will deliberately crash.
-#
-################################################################################
-Capabilities:    
-    Global: &ChannelCapabilities        
-        V1_1: true
-    
-    Orderer: &OrdererCapabilities        
-        V1_1: true
-    
-    Application: &ApplicationCapabilities        
-        V1_2: true
 
 ################################################################################
 #
@@ -137,23 +121,17 @@ Orderer: &OrdererDefaults
 Profiles:
 
     OrgsOrdererGenesis:
-        Capabilities:
-            <<: *ChannelCapabilities
         Orderer:
             <<: *OrdererDefaults
             Organizations:
                 - *OrdererOrg
-            Capabilities:
-                <<: *OrdererCapabilities
         Consortiums:
             SampleConsortium:
                 Organizations:
-                    - *Provider
-                    - *Consumer
+                    - *Org1
     OrgsChannel:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
             Organizations:
-                - *Provider
-                - *Consumer            
+                - *Org1
