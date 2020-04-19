@@ -29,7 +29,7 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.villalabs.co
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.villalabs.co-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/4239aa0dcd76daeeb8ba0cda701851d14504d31aad1b2ddddbac6a57365e497c_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/649cf9c74d5400a7a605e2366fe15354fc7d4f51b4ded69ecd958c72bb70f5a2_sk
     ports:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw'
@@ -37,7 +37,7 @@ services:
       - ./crypto-config/peerOrganizations/org1.villalabs.co/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.villalabs.co
     networks:
-      - basic
+      - sampleNetwork
 
   orderer.villalabs.co:
     container_name: orderer.villalabs.co
@@ -58,7 +58,7 @@ services:
       - ./crypto-config/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/:/etc/hyperledger/msp/orderer
       - ./crypto-config/peerOrganizations/org1.villalabs.co/peers/peer0.org1.villalabs.co/:/etc/hyperledger/msp/peerOrg1
     networks:
-      - basic
+      - sampleNetwork
 
   peer0.org1.villalabs.co:
     container_name: peer0.org1.villalabs.co
@@ -71,7 +71,7 @@ services:
       - CORE_PEER_LOCALMSPID=Org1MSP
       - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
       - CORE_PEER_ADDRESS=peer0.org1.villalabs.co:7051
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=startFiles_basic
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=startFiles_sampleNetwork
     working_dir: /opt/gopath/src/github.com/hyperledger/fabric
     command: peer node start
     # command: peer node start --peer-chaincodedev=true
@@ -86,7 +86,7 @@ services:
     depends_on:
       - orderer.villalabs.co
     networks:
-      - basic
+      - sampleNetwork
 
   cli:
     container_name: cli
@@ -108,7 +108,7 @@ services:
       - ./../chaincode/:/opt/gopath/src/github.com/
       - ./crypto-config:/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/
     networks:
-        - basic
+        - sampleNetwork
     depends_on:
       - orderer.villalabs.co
       - peer0.org1.villalabs.co
