@@ -42,7 +42,7 @@ Organizations:
         # ID to load the MSP definition as
         ID: Org1MSP
 
-        MSPDir: crypto-config/peerOrganizations/Org1.villalabs.co/msp
+        MSPDir: crypto-config/peerOrganizations/org1.villalabs.co/msp
         
         AnchorPeers:
             # AnchorPeers defines the location of peers which can be used
