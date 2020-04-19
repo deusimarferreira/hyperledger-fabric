@@ -2,7 +2,10 @@
 
 ## Baixando Imagens Hyperledger Fabric v1.4
 ~~~sh
-curl -sSL http://bit.ly/2ysbOFE | bash -s 1.4.0
+# Certifique que esteja no diretório correto
+$ cd /opt/blockchain/hyperledger
+
+$ curl -sSL http://bit.ly/2ysbOFE | bash -s 1.4.0
 
 # Verifique que após conclusão será criado diretório fabric-samples
 ls -l
@@ -52,9 +55,15 @@ $ docker exec \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.villalabs.co/msp" peer0.org1.villalabs.co \
     peer channel create -o orderer.villalabs.co:7050 -c $CHANNEL_NAME -f /etc/hyperledger/configtx/channel.tx
 
-# Join peer0.org1.villalabs.co to the channel.
+# Join peer0.org1.villalabs.co to the channel
 $ docker exec \
     -e "CORE_PEER_LOCALMSPID=Org1MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.villalabs.co/msp" peer0.org1.villalabs.co \
     peer channel join -b $CHANNEL_NAME.block
+
+# Verificar o canal criado
+$ docker exec \
+    -e "CORE_PEER_LOCALMSPID=Org1MSP" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.villalabs.co/msp" peer0.org1.villalabs.co \
+    peer channel list
 ~~~
