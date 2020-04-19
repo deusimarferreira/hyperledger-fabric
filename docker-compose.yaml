@@ -20,7 +20,7 @@ networks:
 volumes:
   ca.villalabs.co:
   orderer.villalabs.co:
-  peer0.provider.villalabs.co:
+  peer0.org1.villalabs.co:
 
 services:
   ca.villalabs.co:
