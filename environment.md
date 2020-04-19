@@ -40,7 +40,7 @@ sudo apt install git
 Since we are running Ubuntu 16.04, we should already have the Python version we need automatically installed. We will still perform a double check to ensure Python is installed:
 
 ~~~sh
-python2.7 —version
+python2.7 --version
 ~~~
 
 If for some unknown reason you return an error, you can install it using the following command:
@@ -57,15 +57,17 @@ tar -xzvf go1.14.2.linux-amd64.tar.gz
 rm -rf go1.14.2.linux-amd64.tar.gz
 
 export GOPATH=$HOME/go
-echo "GOPATH=$HOME/go" >> ~/.bash_profile
+sudo echo "GOPATH=$HOME/go" >> ~/.bash_profile
 
 export PATH=$PATH:$GOPATH/bin
-echo "PATH=$PATH:$GOPATH/bin" >> ~/.bash_profile
+sudo echo "PATH=$PATH:$GOPATH/bin" >> ~/.bash_profile
 ~~~
 
 ## Check versions
 ~~~sh
-git -v
-docker-compose -v
-docker -v
+git --version
+docker-compose --version
+docker --version
+python2.7 --version
+go --version
 ~~~

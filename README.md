@@ -14,8 +14,9 @@ Notas:
 Vale lembra que os diretórios utilizados para armazenar os binários e arquivos de configuração da rede a seguir não é uma imposição, você pode definir outros caminhos caso deseje.
 
 ```sh
-$ mkdir /opt/blockchain
-$ mkdir /opt/blockchain/hyperledger/
+$ sudo mkdir /opt/blockchain
+$ sudo mkdir /opt/blockchain/hyperledger/
+$ sudo chown -R student:student /opt/blockchain
 
 $ cd /opt/blockchain/hyperledger/
 ```
