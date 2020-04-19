@@ -54,7 +54,7 @@ services:
     ports:
       - 7050:7050
     volumes:
-      - ./config/:/etc/hyperledger/configtx
+      - ./channel-artifacts/:/etc/hyperledger/configtx
       - ./crypto-config/ordererOrganizations/villalabs.co/orderers/orderer.villalabs.co/:/etc/hyperledger/msp/orderer
       - ./crypto-config/peerOrganizations/org1.villalabs.co/peers/peer0.org1.villalabs.co/:/etc/hyperledger/msp/peerOrg1
     networks:
@@ -82,7 +82,7 @@ services:
       - /var/run/:/host/var/run/
       - ./crypto-config/peerOrganizations/org1.villalabs.co/peers/peer0.org1.villalabs.co/msp:/etc/hyperledger/msp/peer
       - ./crypto-config/peerOrganizations/org1.villalabs.co/users:/etc/hyperledger/msp/users
-      - ./config:/etc/hyperledger/configtx
+      - ./channel-artifacts:/etc/hyperledger/configtx
     depends_on:
       - orderer.villalabs.co
     networks:
