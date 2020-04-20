@@ -9,6 +9,8 @@ Notas:
     Se você utiliza ambiente de desenvolvimento baseado no Windows recomendo uma atenção especial para Windows extras.
 ```
 
+> Para facilitar, disponibilizamos os comandos necessários para configurar nosso ambiente de desenvolvimento [clique aqui](environment.md)
+
 ## Definindo diretório de trabalho
 
 Vale lembra que os diretórios utilizados para armazenar os binários e arquivos de configuração da rede a seguir não é uma imposição, você pode definir outros caminhos caso deseje.
@@ -22,4 +24,6 @@ $ cd /opt/blockchain/hyperledger/
 ```
 
 ## Mãos na massa
-* [Primeira rede Blockchain](lab-1.md)
+* [Criar uma rede Blockchain](lab-1.md)
+* [Adicionar um novo peer na Organização (Org1)](lab-2.md)
+* [Adicionar CouchDB como State Database](lab-3.md)
