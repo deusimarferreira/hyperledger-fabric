@@ -178,3 +178,4 @@ services:
     depends_on:
       - orderer.villalabs.co
       - peer0.org1.villalabs.co
+      - peer1.org1.villalabs.co
