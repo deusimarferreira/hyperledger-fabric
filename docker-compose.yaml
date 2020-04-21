@@ -77,7 +77,7 @@ services:
       ## the following setting starts chaincode containers on the same
       ## bridge network as the peers
       ## https://docs.docker.com/compose/networking/
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_sampleNetwork
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_sampleNetwork
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.org1.villalabs.co:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0.org1
@@ -113,7 +113,7 @@ services:
       ## the following setting starts chaincode containers on the same
       ## bridge network as the peers
       ## https://docs.docker.com/compose/networking/
-      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_sampleNetwork
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=network_sampleNetwork
       - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
       - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer1.org1.villalabs.co:5984
       - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer1.org1
