@@ -19,6 +19,6 @@ docker pull hyperledger/fabric-couchdb
 
 ~~~sh
 $ docker-compose -f docker-compose.yaml up \
-    -d ca.villalabs.co orderer.villalabs.co couchdb.peer1.org1.villalabs.co \
-    peer0.org1.villalabs.co couchdbOrg1Peer1 peer1.org1.villalabs.co cli
+    -d ca.villalabs.co orderer.villalabs.co couchdb.peer0.org1.villalabs.co \
+    peer0.org1.villalabs.co couchdb.peer1.org1.villalabs.co peer1.org1.villalabs.co cli
 ~~~
