@@ -20,7 +20,9 @@ networks:
 volumes:
   ca.villalabs.co:
   orderer.villalabs.co:
+  couchdb.peer0.org1.villalabs.co:
   peer0.org1.villalabs.co:
+  couchdb.peer1.org1.villalabs.co:
   peer1.org1.villalabs.co:
 
 services:
