@@ -1,4 +1,4 @@
-# Hyperledger Fabric 1.4.2
+# Hyperledger Fabric 1.4.0
 
 ## Pré-requisitos
 
