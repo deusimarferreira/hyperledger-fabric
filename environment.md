@@ -35,7 +35,7 @@ export DOCKER_HOST=localhost:2375
 echo "export DOCKER_HOST=localhost:2375" >> ~/.bash_profile
 ~~~
 
-## Docker-Compose
+## Docker Compose
 Para realizar instalar docker-compose execute os comandos a seguir.
 
 ~~~sh
