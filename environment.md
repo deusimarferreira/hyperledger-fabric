@@ -1,9 +1,25 @@
 # Configurações de Ambiente
 
-## System Prerequisites
-It is safe to allocate at a very minimum 30GB of disk space towards using Hyperledger Fabric in a development environment (close to 7GB will account for just running Docker containers). To ensure the containers do not slow down and cause the environment to hang, it is best to allocate at least 4GB of RAM towards use with this course. Lastly, your CPU should be at least dual core or higher.
+## Requsitos para ambiente Dev
+* 30GB de espaço em disco, para se ter uma idéia cerca de 10GB são utilizados somente pelo containers Docker.
+* 4GB de memória RAM
+* CPU dual core ou superior.
 
-Ubuntu 16.04 is the recommended operating system for this course. Ubuntu environments can be run in an Ubuntu desktop OS natively installed, or in a virtual machine (VM). Popular options for VMs include VirtualBox, AWS EC2, and Vagrant.
+Eu utilizei a [DigitalOcean](https://m.do.co/c/fdf4006a9425) como meu ambiente de desenvolvimento, quem se cadastrar [clicando aqui](https://m.do.co/c/fdf4006a9425) ganhará um crédito de $100 por 60 dias (Válido enquanto durar a promoção).
+
+~~~sh
+# Para nosso cenário de estudos vamos criar o usuario aluno e adiciona-lo com permissão sudoers
+adduser aluno
+echo 'aluno ALL=(ALL) ALL' >> /etc/sudoers.d/aluno
+chmod 440 /etc/sudoers.d/aluno
+
+# Saia do root shell
+exit
+
+# Sugiro que você adicione o contéudo (PATH=$PATH:/usr/sbin:/sbin) no arquivo .bashrc no diretório inicial
+vim .bashrc
+PATH=$PATH:/usr/sbin:/sbin
+~~~
 
 ## Docker
 Para realizar instalar Docker runtime execute o [comandos](https://bit.ly/2xEnFkt).
@@ -37,16 +53,14 @@ sudo apt install git
 ~~~
 
 ## Python
-Since we are running Ubuntu 16.04, we should already have the Python version we need automatically installed. We will still perform a double check to ensure Python is installed:
-
 ~~~sh
 python2.7 --version
 ~~~
 
-If for some unknown reason you return an error, you can install it using the following command:
+Se não possui a versão 2.7 instalada, faça a instalação via comando a seguir.
 
 ~~~sh
-sudo apt install -y python-minimal
+sudo apt install -y python2.7-minimal
 ~~~
 
 ## Go Lang

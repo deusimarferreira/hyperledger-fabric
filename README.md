@@ -18,7 +18,7 @@ Vale lembra que os diretórios utilizados para armazenar os binários e arquivos
 ```sh
 $ sudo mkdir /opt/blockchain
 $ sudo mkdir /opt/blockchain/hyperledger/
-$ sudo chown -R student:student /opt/blockchain
+$ sudo chown -R aluno:aluno /opt/blockchain
 
 $ cd /opt/blockchain/hyperledger/
 ```
