@@ -7,6 +7,7 @@
 
 Eu utilizei a [DigitalOcean](https://m.do.co/c/fdf4006a9425) como meu ambiente de desenvolvimento, quem se cadastrar [clicando aqui](https://m.do.co/c/fdf4006a9425) ganhará um crédito de $100 por 60 dias (Válido enquanto durar a promoção).
 
+## Usuário
 ~~~sh
 # Para nosso cenário de estudos vamos criar o usuario aluno e adiciona-lo com permissão sudoers
 adduser aluno
