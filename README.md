@@ -2,14 +2,13 @@
 
 ## Pré-requisitos
 
+Para facilitar, disponibilizei os comandos necessários para configurar o ambiente de desenvolvimento [aqui](/environment.md), mas recomendo fortemente que acesse [pré-requisitos](https://hyperledger-fabric.readthedocs.io/en/latest/prereqs.html) para se familiarizar com os requisitos básicos para rodar uma rede Hyperledger Fabric.
+
 Antes de continuar acesse [pré-requisitos](https://hyperledger-fabric.readthedocs.io/en/latest/prereqs.html) para verificar se seu ambiente de desenvolvimento possui todas as dependências devidamente instaladas e configuradas.
 
 ```txt
-Notas:
-    Se você utiliza ambiente de desenvolvimento baseado no Windows recomendo uma atenção especial para Windows extras.
+Notas: Este post baseia-se em ambiente Linux (Ubuntu 18.04).
 ```
-
-> Para facilitar, disponibilizamos os comandos necessários para configurar nosso ambiente de desenvolvimento [clique aqui](environment.md)
 
 ## Definindo diretório de trabalho
 
