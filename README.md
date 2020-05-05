@@ -1,2 +1,2 @@
 # Hyperledger Fabric 1.4.0
-Configs material para Lab 3
+Configs material para Lab 4
