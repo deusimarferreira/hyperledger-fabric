@@ -96,3 +96,22 @@ $ peer chaincode instantiate -n ccForAll -v 1.0 \
 # -C, --channelID string               The channel on which this command should be executed
 # -c, --ctor string                    Constructor message for the chaincode in JSON format (default "{}")
 ~~~
+
+### Endorsement Policies para executar chaincode
+A instânciação de um chaincode é sinônimo de políticas de endosso (endorsement policy), ambossão confirmados simultâneamente.
+
+As políticas de endosso (endorsement policy) são extremamente importantes ao especificar operações no chaincode porque determina que pode executar o contrato e quem apenas possui o código instalado para consulta e transárências.
+
+Em nosso ``peer0`` vamos executar as políticas de endosso:
+~~~sh
+$ peer chaincode instantiate -n ccForAll -v 1.0 \
+    -o orderer.villalabs.co:7050 -C $CHANNEL_NAME \
+    -c '{"Args":["Mach","50"]}' \
+    --policy "AND('Org1.peer', OR ('Org1.member))"
+
+# Next, let’s confirm that the chaincode is properly installed on the peer.
+$ peer chaincode list --installed
+
+# Second, let’s confirm the instantiation on our channel:
+$ peer chaincode list --instantiated -C $CHANNEL_NAME
+~~~
