@@ -22,13 +22,15 @@ volumes:
   orderer.villalabs.co:
   peer0.org1.villalabs.co:
   peer1.org1.villalabs.co:
+  peer0.org2.villalabs.co:
+  peer1.org2.villalabs.co:
 
 services:
-  ca.villalabs.co:
+  ca.org1.villalabs.co:
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
-      - FABRIC_CA_SERVER_CA_NAME=ca.villalabs.co
+      - FABRIC_CA_SERVER_CA_NAME=ca.org1.villalabs.co
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org1.villalabs.co-cert.pem
       - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/649cf9c74d5400a7a605e2366fe15354fc7d4f51b4ded69ecd958c72bb70f5a2_sk
     ports:
@@ -36,7 +38,23 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw'
     volumes:
       - ./crypto-config/peerOrganizations/org1.villalabs.co/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca.villalabs.co
+    container_name: ca.org1.villalabs.co
+    networks:
+      - sampleNetwork
+  
+  ca.org2.villalabs.co:
+    image: hyperledger/fabric-ca
+    environment:
+      - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
+      - FABRIC_CA_SERVER_CA_NAME=ca.org2.villalabs.co
+      - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.villalabs.co-cert.pem
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/649cf9c74d5400a7a605e2366fe15354fc7d4f51b4ded69ecd958c72bb70f5a2_sk
+    ports:
+      - "8054:7054"
+    command: sh -c 'fabric-ca-server start -b admin:adminpw'
+    volumes:
+      - ./crypto-config/peerOrganizations/org1.villalabs.co/ca/:/etc/hyperledger/fabric-ca-server-config
+    container_name: ca.org2.villalabs.co
     networks:
       - sampleNetwork
 
@@ -132,6 +150,77 @@ services:
     networks:
       - sampleNetwork
 
+  peer0.org2.villalabs.co:
+    container_name: peer0.org2.villalabs.co
+    image: hyperledger/fabric-peer
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ID=peer0.org2.villalabs.co
+      - FABRIC_LOGGING_SPEC=info
+      - CORE_CHAINCODE_LOGGING_LEVEL=info
+      - CORE_PEER_LOCALMSPID=org2MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
+      - CORE_PEER_ADDRESS=peer0.org2.villalabs.co:7051
+      ## the following setting starts chaincode containers on the same
+      ## bridge network as the peers
+      ## https://docs.docker.com/compose/networking/
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_sampleNetwork
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer0.org2.villalabs.co:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer0.org2
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=password
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: peer node start
+    # command: peer node start --peer-chaincodedev=true
+    ports:
+      - 9051:7051
+      - 9053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/org2.villalabs.co/peers/peer0.org2.villalabs.co/msp:/etc/hyperledger/msp/peer
+      - ./crypto-config/peerOrganizations/org2.villalabs.co/users:/etc/hyperledger/msp/users
+      - ./channel-artifacts:/etc/hyperledger/configtx
+    depends_on:
+      - orderer.villalabs.co
+      - couchdb.peer0.org2.villalabs.co
+    networks:
+      - sampleNetwork
+
+  peer1.org2.villalabs.co:
+    container_name: peer1.org2.villalabs.co
+    image: hyperledger/fabric-peer
+    environment:
+      - CORE_VM_ENDPOINT=unix:///host/var/run/docker.sock
+      - CORE_PEER_ID=peer1.org2.villalabs.co
+      - CORE_LOGGING_PEER=info
+      - CORE_CHAINCODE_LOGGING=debug
+      - CORE_PEER_LOCALMSPID=org2MSP
+      - CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/peer/
+      - CORE_PEER_ADDRESS=peer1.org2.villalabs.co:7051
+      ## the following setting starts chaincode containers on the same
+      ## bridge network as the peers
+      ## https://docs.docker.com/compose/networking/
+      - CORE_VM_DOCKER_HOSTCONFIG_NETWORKMODE=${COMPOSE_PROJECT_NAME}_sampleNetwork
+      - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couchdb.peer1.org2.villalabs.co:5984
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_USERNAME=peer1.org2
+      - CORE_LEDGER_STATE_COUCHDBCONFIG_PASSWORD=password
+    working_dir: /opt/gopath/src/github.com/hyperledger/fabric
+    command: peer node start
+    ports:
+      - 10051:7051
+      - 10053:7053
+    volumes:
+      - /var/run/:/host/var/run/
+      - ./crypto-config/peerOrganizations/org2.villalabs.co/peers/peer1.org2.villalabs.co/msp:/etc/hyperledger/msp/peer
+      - ./crypto-config/peerOrganizations/org2.villalabs.co/users:/etc/hyperledger/msp/users
+      - ./channel-artifacts:/etc/hyperledger/configtx
+    depends_on:
+      - orderer.villalabs.co
+      - couchdb.peer1.org2.villalabs.co
+    networks:
+      - sampleNetwork
+      
   couchdb.peer0.org1.villalabs.co:
     container_name: couchdb.peer0.org1.villalabs.co
     environment:
@@ -154,6 +243,28 @@ services:
     networks: 
       - sampleNetwork
 
+  couchdb.peer0.org2.villalabs.co:
+    container_name: couchdb.peer0.org2.villalabs.co
+    environment:
+      - COUCHDB_USER=peer0.org2
+      - COUCHDB_PASSWORD=password
+    image: hyperledger/fabric-couchdb
+    ports: 
+      - 7984:5984
+    networks: 
+      - sampleNetwork
+
+  couchdb.peer1.org2.villalabs.co:
+    container_name: couchdb.peer1.org2.villalabs.co
+    environment:
+      - COUCHDB_USER=peer1.org2
+      - COUCHDB_PASSWORD=password
+    image: hyperledger/fabric-couchdb
+    ports: 
+      - 8984:5984
+    networks: 
+      - sampleNetwork
+      
   cli:
     container_name: cli
     image: hyperledger/fabric-tools
