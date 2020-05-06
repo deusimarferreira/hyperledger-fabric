@@ -1,4 +1,4 @@
-# Lab 3
+# Lab 4
 
 ## Gerenciamento de Chaincode (Smart contract)
 
@@ -107,7 +107,7 @@ Em nosso ``peer0`` vamos executar as políticas de endosso:
 $ peer chaincode instantiate -n ccForAll -v 1.0 \
     -o orderer.villalabs.co:7050 -C $CHANNEL_NAME \
     -c '{"Args":["Mach","50"]}' \
-    --policy "AND('Org1.peer', OR ('Org1.member))"
+    --policy "AND('Org1.peer', OR ('Org1.member'))"
 
 # Next, let’s confirm that the chaincode is properly installed on the peer.
 $ peer chaincode list --installed
