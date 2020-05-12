@@ -18,7 +18,8 @@ networks:
   sampleNetwork:
 
 volumes:
-  ca.villalabs.co:
+  ca.org1.villalabs.co:
+  ca.org2.villalabs.co:
   orderer.villalabs.co:
   peer0.org1.villalabs.co:
   peer1.org1.villalabs.co:
