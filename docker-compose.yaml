@@ -49,12 +49,12 @@ services:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
       - FABRIC_CA_SERVER_CA_NAME=ca.org2.villalabs.co
       - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.org2.villalabs.co-cert.pem
-      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/ea801685f23094dad7e20a2531ef5f7c609308232b87b3dfddf606f185177fe3_sk
+      - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/122cb01b3055a520278aaadae69a3ac8e2bb16f6fade63fc8878eb5f4ac4bf53_sk
     ports:
       - "8054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw'
     volumes:
-      - ./crypto-config/peerOrganizations/org1.villalabs.co/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/org2.villalabs.co/ca/:/etc/hyperledger/fabric-ca-server-config
     container_name: ca.org2.villalabs.co
     networks:
       - sampleNetwork
