@@ -24,6 +24,7 @@ volumes:
 
 services:
   ca.villalabs.co:
+    container_name: ca.villalabs.co
     image: hyperledger/fabric-ca
     environment:
       - FABRIC_CA_HOME=/etc/hyperledger/fabric-ca-server
@@ -35,7 +36,6 @@ services:
     command: sh -c 'fabric-ca-server start -b admin:adminpw'
     volumes:
       - ./crypto-config/peerOrganizations/org1.villalabs.co/ca/:/etc/hyperledger/fabric-ca-server-config
-    container_name: ca.villalabs.co
     networks:
       - sampleNetwork
 
