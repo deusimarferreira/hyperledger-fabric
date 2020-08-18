@@ -1,7 +1,7 @@
 # Lab 6
 
 ## Atualizar Chaincode
-Image que foi indetificado um bug no chaincode, após a correção ser aplicada será necessário implantar nos pares, abaixo apresentamos como realizar a atualização do contrato.
+Imagine que foi indetificado um bug no chaincode, após a correção ser aplicada será necessário implantar a atualização nos participantes, abaixo apresentamos como realizar a atualização do contrato.
 
 ~~~sh
 $ docker container rm -f cli
@@ -16,5 +16,5 @@ $ export CHANNEL_NAME=villalabs-channel
 
 $ peer chaincode upgrade -n ccForAll -v 1.1 -C $CHANNEL_NAME \
     -c '{"Args":["Mach","50"]}' \
-    -P "AND('Org1.peer', OR ('Org1.member'))"
+    -P "AND('Org1.peer', 'Org2.peer', OR ('Org1.member'))"
 ~~~

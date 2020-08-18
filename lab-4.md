@@ -4,13 +4,22 @@
 
 ### Realizar a instalação do contrato (Chaincode) - PEER0
 
+Atualiza o contêiner ``cli``.
+~~~sh
+# Atualiza cliente fabric-tool
+docker-compose -f docker-compose.yaml up -d cli
+
+# Acessa contêiner
+docker exec -it cli bash
+~~~
+
 Definir variaveis de ambiente para o PEER qual iremos instalar o Chaincode
 ~~~sh
 # Member Service Provider config path to certificates
 $ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.villalabs.co/users/Admin\@org1.villalabs.co/msp/
 
 # Define member service provider
-$ export CORE_PEER_LOCALMSPID="Org1MSP"
+$ export CORE_PEER_LOCALMSPID=Org1MSP
 
 # Define peer, qual iremos instalar o certificado
 $ export CORE_PEER_ADDRESS=peer0.org1.villalabs.co:7051
@@ -87,6 +96,8 @@ $ export CHANNEL_NAME=villalabs-channel
 
 Definido as variáveis. Vamos instânciar nosso chaincode usando o comando ``peer chaincode instantiate``, esse comando inicia o ciclo de vida (lifecycle) para o chaincode. Ele pode demorar um pouco, apenas espere.
 ~~~sh
+# Atenção, não execute esse comando, vamos instanciar nosso chaincode com policies
+# Vide: Endorsement Policies para executar chaincode
 $ peer chaincode instantiate -n ccForAll -v 1.0 \
     -o orderer.villalabs.co:7050 -C $CHANNEL_NAME \
     -c '{"Args":["Mach","50"]}'

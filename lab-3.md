@@ -82,28 +82,40 @@ $ curl http://localhost:6984
 $ docker exec \
     -e "CORE_PEER_LOCALMSPID=Org1MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.villalabs.co/msp" peer0.org1.villalabs.co \
-    peer channel fetch oldest villalabs-channel.block -c villalabs-channel \
+    peer channel fetch oldest $CHANNEL_NAME.block -c $CHANNEL_NAME \
     --orderer orderer.villalabs.co:7050
 
 # Segundo, vamos executar um join
 $ docker exec \
     -e "CORE_PEER_LOCALMSPID=Org1MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.villalabs.co/msp" peer0.org1.villalabs.co \
-    peer channel join -b villalabs-channel.block
+    peer channel join -b $CHANNEL_NAME.block
+    
+# Verificar canal
+docker exec \
+    -e "CORE_PEER_LOCALMSPID=Org1MSP" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.villalabs.co/msp" peer0.org1.villalabs.co \
+    peer channel list
 
 # PEER1
 # Primeiro vamos fazer um fetch do genesis block para o corrente channel
 $ docker exec \
     -e "CORE_PEER_LOCALMSPID=Org1MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.villalabs.co/msp" peer1.org1.villalabs.co \
-    peer channel fetch oldest villalabs-channel.block -c villalabs-channel \
+    peer channel fetch oldest $CHANNEL_NAME.block -c $CHANNEL_NAME \
     --orderer orderer.villalabs.co:7050
 
 # Segundo, vamos executar um join
 $ docker exec \
     -e "CORE_PEER_LOCALMSPID=Org1MSP" \
     -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.villalabs.co/msp" peer1.org1.villalabs.co \
-    peer channel join -b villalabs-channel.block
+    peer channel join -b $CHANNEL_NAME.block
+    
+# Verificar canal
+docker exec \
+    -e "CORE_PEER_LOCALMSPID=Org1MSP" \
+    -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.villalabs.co/msp" peer1.org1.villalabs.co \
+    peer channel list
 
 # https://lists.hyperledger.org/g/fabric/topic/issue_couchdb_and_fabric_peer/68526566?p=,,,20,0,0,0::recentpostdate%2Fsticky,,,20,2,0,68526566
 # https://forum.linuxfoundation.org/discussion/856354/lab3-panic-runtime-error-invalid-memory-address-or-nil-pointer-dereference

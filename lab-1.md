@@ -46,7 +46,9 @@ $ configtxgen -profile OrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/
 # Para e limpa todos os containers existentes
 $ docker-compose -f docker-compose.yaml down
 
-# Sobre containers
+# Sobe containers
+# Antes de continuar será necessário alterar a env FABRIC_CA_SERVER_CA_KEYFILE para a ca.villalabs.co no docker-compose.yaml
+# ls -la crypto-config/peerOrganizations/org1.villalabs.co/ca/ | grep _sk
 $ docker-compose -f docker-compose.yaml up -d
 
 # Create the channel
