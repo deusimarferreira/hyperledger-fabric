@@ -75,3 +75,39 @@ $ docker-compose -f docker-compose.yaml up -d \
 
 $ docker ps -a --format "table {{.ID}}\t{{.Names}}\t{{.Status}}"
 ~~~
+
+Vamos agora adicionar o canal existente aos peer's da Org2
+~~~sh
+$ docker exec -it cli bash
+$ export CHANNEL_NAME=villalabs-channel
+
+$ export CORE_PEER_LOCALMSPID=Org2MSP
+$ export CORE_PEER_ADDRESS=peer0.org2.villalabs.co:7051
+$ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.villalabs.co/users/Admin\@org2.villalabs.co/msp
+
+$ peer channel fetch config Org2AddedConfig.pb \
+  -o orderer.villalabs.co:7050 -c $CHANNEL_NAME
+$ peer channel fetch 0 Org2AddedConfig.block \
+  -o orderer.villalabs.co:7050 -c $CHANNEL_NAME
+  
+$ peer channel join -b Org2AddedConfig.block
+
+$ peer chaincode install -n ccForAll -v 1.1 -n networkChaincode \
+  -p github.com/sacc
+  
+# Vamos ao peer1
+$ export CORE_PEER_ADDRESS=peer1.org2.villalabs.co:7051  
+$ peer channel join -b Org2AddedConfig.block
+$ peer chaincode install -n ccForAll -v 1.1 -n networkChaincode \
+  -p github.com/sacc
+  
+$ peer chaincode list --installed
+
+$ peer chaincode upgrade -n ccForAll -v 1.1 -n networkChaincode -C $CHANNEL_NAME \
+  -o orderer.villalabs.co:7050 \
+  --policy "AND('Org1.peer', 'Org2.peer' OR ('Org1.admin'))" \
+  -c '{"Args":["Mach", "50"]}'
+  
+$ peer chaincode list --installed && peer chaincode list \
+  --instantiated -C $CHANNEL_NAME
+~~~
