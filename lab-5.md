@@ -33,6 +33,9 @@ Pronto, agora vamos acessar o container ``cli``:
 ~~~sh
 $ docker exec -it cli bash
 
+# Defina novamente a variável CHANNEL_NAME
+export CHANNEL_NAME=villalabs-channel
+
 # Agora vamos executar o comando referente a nossa Anchor Peer criado anterioremente
 $ peer channel update -o orderer.villalabs.co:7050 -c $CHANNEL_NAME \
     -f ./config/changeanchorpeerorg1.tx
