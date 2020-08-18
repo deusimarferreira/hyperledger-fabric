@@ -174,8 +174,8 @@ services:
       - 9053:7053
     volumes:
       - /var/run/:/host/var/run/
-      - ./crypto-config/peerOrganizations/org1.villalabs.co/peers/peer0.org2.villalabs.co/msp:/etc/hyperledger/msp/peer
-      - ./crypto-config/peerOrganizations/org1.villalabs.co/users:/etc/hyperledger/msp/users
+      - ./crypto-config/peerOrganizations/org2.villalabs.co/peers/peer0.org2.villalabs.co/msp:/etc/hyperledger/msp/peer
+      - ./crypto-config/peerOrganizations/org2.villalabs.co/users:/etc/hyperledger/msp/users
       - ./channel-artifacts:/etc/hyperledger/configtx
     depends_on:
       - orderer.villalabs.co
@@ -207,8 +207,8 @@ services:
       - 10053:7053
     volumes:
       - /var/run/:/host/var/run/
-      - ./crypto-config/peerOrganizations/org1.villalabs.co/peers/peer0.org2.villalabs.co/msp:/etc/hyperledger/msp/peer
-      - ./crypto-config/peerOrganizations/org1.villalabs.co/users:/etc/hyperledger/msp/users
+      - ./crypto-config/peerOrganizations/org2.villalabs.co/peers/peer1.org2.villalabs.co/msp:/etc/hyperledger/msp/peer
+      - ./crypto-config/peerOrganizations/org2.villalabs.co/users:/etc/hyperledger/msp/users
       - ./channel-artifacts:/etc/hyperledger/configtx
     depends_on:
       - orderer.villalabs.co
