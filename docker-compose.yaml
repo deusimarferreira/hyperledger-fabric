@@ -259,6 +259,89 @@ services:
       - 8984:5984
     networks:
       - sampleNetwork
+  
+  kafkaA.villalabs.co:
+    container_name: kafkaA.villalabs.co
+    image: hyperledger/fabric-kafka
+    restart: always
+    environment:
+      - KAFKA_MESSAGE_MAX_BYTES=103809024
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=103809024
+      - KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE=false
+      - KAFKA_MIN_INSYNC_REPLICAS=2
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=2
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0.villalabs.co:2181, zookeeper1.villalabs.co:2181,zookeeper2.villalabs.co:2181
+      - KAFKA_BROKER_ID=0
+    ports:
+      - 9092:9092
+      - 9093:9093
+    networks:
+      - sampleNetwork
+    depends_on:
+      - zookeeper0.villalabs.co
+      - zookeeper1.villalabs.co
+      - zookeeper2.villalabs.co
+
+  kafkaB.villalabs.co:
+    container_name: kafkaB.villalabs.co
+    image: hyperledger/fabric-kafka
+    restart: always
+    environment:
+      - KAFKA_MESSAGE_MAX_BYTES=103809024
+      - KAFKA_REPLICA_FETCH_MAX_BYTES=103809024
+      - KAFKA_UNCLEAN_LEADER_ELECTION_ENABLE=false
+      - KAFKA_MIN_INSYNC_REPLICAS=2
+      - KAFKA_DEFAULT_REPLICATION_FACTOR=2
+      - KAFKA_ZOOKEEPER_CONNECT=zookeeper0.villalabs.co:2181, zookeeper1.villalabs.co:2181,zookeeper2.villalabs.co:2181
+      - KAFKA_BROKER_ID=1
+    ports:
+      - 10092:9092
+      - 10093:9093
+    networks:
+      - sampleNetwork
+    depends_on:
+      - zookeeper0.villalabs.co
+      - zookeeper1.villalabs.co
+      - zookeeper2.villalabs.co
+      
+  zookeeper0.villalabs.co:
+    container_name: zookeeper0.villalabs.co
+    image: hyperledger/fabric-zookeeper
+    environment:
+      - ZOO_MY_ID=1
+      - ZOO_SERVERS=server.1=zookeeper0.villalabs.co:2888:3888 server.2=zookeeper1.villalabs.co:2888:3888 server.3=zookeeper2.villalabs.co:2888:3888
+    ports:
+      - 2181:2181
+      - 2888:2888
+      - 3888:3888
+    networks:
+      - sampleNetwork
+
+  zookeeper1.villalabs.co:
+    container_name: zookeeper1.villalabs.co
+    image: hyperledger/fabric-zookeeper
+    environment:
+      - ZOO_MY_ID=2
+      - ZOO_SERVERS=server.1=zookeeper0.villalabs.co:2888:3888 server.2=zookeeper1.villalabs.co:2888:3888 server.3=zookeeper2.villalabs.co:2888:3888
+    ports:
+      - 12181:2181
+      - 12888:2888
+      - 13888:3888
+    networks:
+      - sampleNetwork
+  
+  zookeeper2.villalabs.co:
+    container_name: zookeeper2.villalabs.co
+    image: hyperledger/fabric-zookeeper
+    environment:
+      - ZOO_MY_ID=3
+      - ZOO_SERVERS=server.1=zookeeper0.villalabs.co:2888:3888 server.2=zookeeper1.villalabs.co:2888:3888 server.3=zookeeper2.villalabs.co:2888:3888
+    ports:
+      - 22181:2181
+      - 22888:2888
+      - 23888:3888
+    networks:
+      - sampleNetwork
 
   cli:
     container_name: cli
