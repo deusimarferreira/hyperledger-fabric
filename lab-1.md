@@ -40,8 +40,8 @@ $ mkdir crypto-config channel-artifacts
 $ cryptogen generate --config=./crypto-config.yaml
 
 $ configtxgen -profile OrgsOrdererGenesis -outputBlock ./channel-artifacts/genesis.block
-$ configtxgen -profile OrgsChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
-$ configtxgen -profile OrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
+$ configtxgen -profile OrgChannel -outputCreateChannelTx ./channel-artifacts/channel.tx -channelID $CHANNEL_NAME
+$ configtxgen -profile OrgChannel -outputAnchorPeersUpdate ./channel-artifacts/Org1MSPanchors.tx -channelID $CHANNEL_NAME -asOrg Org1MSP
 
 # Para e limpa todos os containers existentes
 $ docker-compose -f docker-compose.yaml down
