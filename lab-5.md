@@ -13,7 +13,7 @@ AnchorPeers:
 ~~~sh
 $ export CHANNEL_NAME=villalabs-channel
 
-$ configtxgen -profile OrgsChannel -outputAnchorPeersUpdate ./channel-artifacts/changeanchorpeerorg1.tx \
+$ configtxgen -profile OrgChannel -outputAnchorPeersUpdate ./channel-artifacts/changeanchorpeerorg1.tx \
     -channelID $CHANNEL_NAME -asOrg Org1MSP
 ~~~
 
