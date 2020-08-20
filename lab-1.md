@@ -5,7 +5,7 @@
 # Certifique que esteja no diretório correto
 $ cd /opt/blockchain/hyperledger
 
-$ curl -sSL http://bit.ly/2ysbOFE | bash -s 1.4.0
+$ curl -sSL http://bit.ly/2ysbOFE | bash -s 1.4.4 1.4.4 1.4.4
 
 # Verifique que após conclusão será criado diretório fabric-samples
 ls -l
