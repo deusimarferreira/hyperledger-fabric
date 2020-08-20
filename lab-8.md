@@ -13,7 +13,7 @@ Altere o arquivo _confitx.yaml_ para adicionar as configurações dos canais na 
             Organizations:
                 - *Org2
                 
-    OrgsChannelTwo:
+    OrgsChannel:
         Consortium: SampleConsortium
         Application:
             <<: *ApplicationDefaults
@@ -28,7 +28,7 @@ $ configtxgen -profile OrgTwoChannel \
     -outputCreateChannelTx ./channel-artifacts/OrgTwoChannel.tx \
     -channelID orgtwochannel
 
-$ configtxgen -profile OrgsChannelTwo \
+$ configtxgen -profile OrgsChannel \
     -outputCreateChannelTx ./channel-artifacts/OrgsChannelTwo.tx \
     -channelID orgschanneltwo
 
@@ -45,8 +45,8 @@ $ export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/p
 
 # Adiciona o segundo canal
 $ peer channel create -o orderer.villalabs.com:7050 \
-    -f ./config/OrgsChannelTwo.tx -c orgschanneltwo
-$ peer channel join -b orgschanneltwo.block
+    -f ./config/OrgsChannel.tx -c orgschannel
+$ peer channel join -b orgschannel.block
 
 # Adiciona segundo canal
 $ peer channel create -o orderer.villalabs.com:7050 \
