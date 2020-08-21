@@ -1,2 +1,2 @@
-# Hyperledger Fabric 1.4.4
-Configs material para Lab 8
+# Hyperledger Fabric v1.4
+Configs material para Lab 11
