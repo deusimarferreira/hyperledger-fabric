@@ -92,20 +92,20 @@ $ peer channel fetch 0 Org2AddedConfig.block \
   
 $ peer channel join -b Org2AddedConfig.block
 
-$ peer chaincode install -n ccForAll -v 1.1 -n networkChaincode \
+$ peer chaincode install -n ccForAll -v 1.1 \
   -p github.com/sacc
   
 # Vamos ao peer1
 $ export CORE_PEER_ADDRESS=peer1.org2.villalabs.co:7051  
 $ peer channel join -b Org2AddedConfig.block
-$ peer chaincode install -n ccForAll -v 1.1 -n networkChaincode \
+$ peer chaincode install -n ccForAll -v 1.1 \
   -p github.com/sacc
   
 $ peer chaincode list --installed
 
-$ peer chaincode upgrade -n ccForAll -v 1.1 -n networkChaincode -C $CHANNEL_NAME \
+$ peer chaincode upgrade -n ccForAll -v 1.1 -C $CHANNEL_NAME \
   -o orderer.villalabs.co:7050 \
-  --policy "AND('Org1.peer', 'Org2.peer' OR ('Org1.admin'))" \
+  --policy "AND('Org1.peer', 'Org2.peer', OR ('Org1.admin'))" \
   -c '{"Args":["Mach", "50"]}'
   
 $ peer chaincode list --installed && peer chaincode list \
